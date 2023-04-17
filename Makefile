@@ -1,10 +1,14 @@
-run: Functions.c Git.c Git .h
-	gcc -c Git.c -o git.o
-	gcc -c Functions.c -o func.o
-	gcc git.o func.o -o prog.exe
+programa: arq.o
+	gcc func.o fila.o -o prog.exe
+
+arq.o: Git.h Git.c Functions.c 
+	gcc -c -g Git.c -o fila.o
+	gcc -c -g Functions.c -o func.o
+
+run: programa
 	./prog.exe
 
 clean:
-	rm git.o func.o prog.exe
+	rm func.o fila.o prog.exe
 
-all: run clean
+all: programa run clean
