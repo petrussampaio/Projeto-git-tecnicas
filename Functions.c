@@ -64,6 +64,7 @@ void verifica_comando(header *h, header *branch){
     char *commit = "commit";
     char *checkout = "checkout";
     char *merge = "merge";
+    char *log = "log";
 
 
     if(strcmp(h -> primeiro -> info, git) != 0 || h -> ultimo == h -> primeiro){
@@ -78,6 +79,8 @@ void verifica_comando(header *h, header *branch){
             f_checkout(h);
         }else if(strcmp(h -> primeiro -> proximo -> info, merge) == 0){
             f_merge(h);
+        }else if(strcmp(h -> primeiro -> proximo -> info, log) == 0){
+            f_log(h);
         }else{
             printf("Comando nao reconhecido!\n");
             return;
@@ -87,6 +90,10 @@ void verifica_comando(header *h, header *branch){
 
 void f_commit(header *h){
     printf("Comando commit!\n");
+}
+
+void f_log(header *h){
+    printf("Comando log!\n");
 }
 
 void f_branch(header *h, header *branch){

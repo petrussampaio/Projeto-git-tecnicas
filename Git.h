@@ -23,5 +23,6 @@ void f_commit(header *h);
 void f_branch(header *h, header *branch);
 void f_checkout(header *h);
 void f_merge(header *h);
+void f_log(header *h);
 
 
