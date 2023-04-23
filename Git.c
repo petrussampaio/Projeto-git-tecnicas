@@ -7,7 +7,9 @@ int main(){
     char *quit = "quit";
     int cond = 1;
     header *branch = cria_header();
-    guarda_info(branch, "main");
+    guarda_info(branch, "Master");
+    header *commits = cria_header();
+    guarda_info(commits, "First commit");
 
     while(cond == 1){
         char *comando = (char*) malloc(50 * sizeof(char));
@@ -17,11 +19,11 @@ int main(){
             break;
         }
 
-        header *main = separa_string(comando);
+        header *linha = separa_string(comando);
 
-        verifica_comando(main, branch);
+        verifica_comando(linha, branch, commits);
 
-        limpa(main);
+        limpa(linha);
     }
 
     printf("Finalizando programa...\n");

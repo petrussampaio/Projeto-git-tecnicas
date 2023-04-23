@@ -5,5 +5,8 @@
             "binaryPath": "/home/tavora/Git-projeto/Git",
             "binaryArgs": []
         }
-    ]
+    ],
+    "files.associations": {
+        "stdio.h": "c"
+    }
 }

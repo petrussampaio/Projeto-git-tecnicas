@@ -58,7 +58,7 @@ void guarda_info(header *h, char *info){
     }
 }
 
-void verifica_comando(header *h, header *branch){
+void verifica_comando(header *h, header *branch, header *commits){
     char *git = "git";
     char *branch_cod = "branch";
     char *commit = "commit";
@@ -74,13 +74,13 @@ void verifica_comando(header *h, header *branch){
         if(strcmp(h -> primeiro -> proximo -> info, branch_cod) == 0){
             f_branch(h, branch);
         }else if(strcmp(h -> primeiro -> proximo -> info, commit) == 0){
-            f_commit(h);
+            f_commit(h, commits);
         }else if(strcmp(h -> primeiro -> proximo -> info, checkout) == 0){
-            f_checkout(h);
+            f_checkout(h, branch);
         }else if(strcmp(h -> primeiro -> proximo -> info, merge) == 0){
             f_merge(h);
         }else if(strcmp(h -> primeiro -> proximo -> info, log) == 0){
-            f_log(h);
+            f_log(h, commits, branch);
         }else{
             printf("Comando nao reconhecido!\n");
             return;
@@ -88,27 +88,57 @@ void verifica_comando(header *h, header *branch){
     }
 }
 
-void f_commit(header *h){
-    printf("Comando commit!\n");
+void f_commit(header *h, header *commits){
+    char *err = "-m";
+
+    if(strcmp(h -> ultimo -> info, err) == 0){
+        printf("Comando invalido!\n");
+    }else{
+        guarda_info(commits, h -> ultimo -> info);
+        printf("Commit '%s' criado com sucesso!\n", commits -> ultimo -> info);
+    }
+
 }
 
-void f_log(header *h){
-    printf("Comando log!\n");
+void f_log(header *h, header *commits, header *branch){
+    char *log = "log";
+
+    if(strcmp(h -> ultimo -> info, log) == 0){
+        printf("Branch: %s\n", branch -> primeiro -> info);
+        imprime(commits);
+    }else{
+        printf("Comando invalido!\n");
+    }
 }
 
 void f_branch(header *h, header *branch){
     char *branch_cod = "branch";
 
     if(strcmp(h -> ultimo -> info, branch_cod) == 0){
-        printf("Atualmente na branch %s\n", branch -> primeiro -> info);
+        printf("Comando invalido!\n");
     }else{
         guarda_info(branch, h -> ultimo -> info);
         printf("Branch '%s' criada com sucesso!\n", branch -> ultimo -> info);
     }
 }
 
-void f_checkout(header *h){
-    printf("Comando checkout!\n");
+void f_checkout(header *h, header *branch){
+    char *checkout = "checkout";
+
+    if(strcmp(h -> ultimo -> info, checkout) == 0){
+        printf("Comando invalido!\n");
+    }else{
+        for(encad *p = branch -> primeiro; p != NULL; p = p -> proximo){
+            if(strcmp(h -> ultimo -> info, p -> info) == 0){
+                char *aux = branch -> primeiro -> info;
+                branch -> primeiro -> info = h -> ultimo -> info;
+                p -> info = aux;
+                return;
+            }
+        }
+        printf("Branch nao existe!\n");
+        return;
+    }
 }
 
 void f_merge(header *h){
@@ -121,7 +151,7 @@ void limpa(header *h){
 
     if(p == NULL){
         printf("\nLista vazia!\n\n");
-        return 0;
+        return;
     }
 
     while(p != NULL){
@@ -131,6 +161,13 @@ void limpa(header *h){
     }
 
     free(h);
+}
+
+void imprime(header *h){
+    for(encad *p = h -> primeiro; p != NULL; p = p -> proximo){
+        printf("%p %s\n", p, p -> info);
+    }
+
 }
 
 
